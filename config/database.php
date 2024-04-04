@@ -80,7 +80,7 @@ return [
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
-            'url' => env('DATABASE_URL'),
+            'url' => env('DB_URI'),
             'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '1433'),
             'database' => env('DB_DATABASE', 'forge'),
@@ -93,12 +93,12 @@ return [
 
         'mongodb' => [
             'driver' => 'mongodb',
-            'dsn' => env('DB_URI'),
-            'database' => 'test',
-    ],
-
-    ],
-
+            'dsn' => env('DB_URI'), // Utiliza la variable de entorno DB_URI para la cadena de conexión MongoDB
+            'database' => env('DB_DATABASE', 'material_free_livewire'), // Utiliza la variable de entorno DB_DATABASE para el nombre de la base de datos MongoDB
+        ],
+        
+        ],
+        
     /*
     |--------------------------------------------------------------------------
     | Migration Repository Table
