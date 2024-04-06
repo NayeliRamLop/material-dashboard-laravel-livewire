@@ -1,17 +1,3 @@
-<!--
-=========================================================
-* Material Dashboard 2 - v3.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard
-* Copyright 2021 Creative Tim (https://www.creative-tim.com) & UPDIVISION (https://www.updivision.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-* Coded by www.creative-tim.com & www.updivision.com
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html lang='en' dir="{{ Route::currentRouteName() == 'rtl' ? 'rtl' : '' }}">
 <head>
@@ -19,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets') }}/img/apple-icon.png">
     <link rel="icon" type="image/png" href="{{ asset('assets') }}/img/favicon.png">
-    <title>
-        Material Dashboard 2 by Creative Tim & UPDIVISION
-    </title>
 
     <!-- Metas -->
     @if (env('IS_DEMO'))
@@ -67,6 +50,7 @@
 <script src="{{ asset('assets') }}/js/core/bootstrap.min.js"></script>
 <script src="{{ asset('assets') }}/js/plugins/perfect-scrollbar.min.js"></script>
 <script src="{{ asset('assets') }}/js/plugins/smooth-scrollbar.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 @stack('js')
 <script>
     var win = navigator.platform.indexOf('Win') > -1;

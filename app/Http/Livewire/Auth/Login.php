@@ -29,13 +29,13 @@ class Login extends Component
     
     public function store()
     {
-        $attributes = $this->validate();
+        // $attributes = $this->validate();
 
-        if (! auth()->attempt($attributes)) {
-            throw ValidationException::withMessages([
-                'email' => 'Your provided credentials could not be verified.'
-            ]);
-        }
+        // if (! auth()->attempt($attributes)) {
+        //     throw ValidationException::withMessages([
+        //         'email' => 'Your provided credentials could not be verified.'
+        //     ]);
+        // }
 
         session()->regenerate();
 

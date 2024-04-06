@@ -14,9 +14,6 @@ class UserProfile extends Component
         return [
             'user.name' => 'required',
             'user.email' => 'required|email|unique:users,email,'.$this->user->id,
-            'user.phone' => 'required|max:10',
-            'user.about' => 'required:max:150',
-            'user.location' => 'required'
         ];
     }
 

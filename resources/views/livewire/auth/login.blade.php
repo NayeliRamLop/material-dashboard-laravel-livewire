@@ -52,10 +52,7 @@
                                         <label class="form-label">Password</label>
                                         <input wire:model="password" type="password" class="form-control"
                                              >
-                                    </div>
-                                    @error('password')
-                                    <p class='text-danger inputerror'>{{ $message }} </p>
-                                    @enderror
+                                    </div>  
                                     <div class="form-check form-switch d-flex align-items-center my-3">
                                         <input class="form-check-input" type="checkbox" id="rememberMe">
                                         <label class="form-check-label mb-0 ms-2" for="rememberMe">Remember
@@ -72,8 +69,6 @@
                                     </p>
                                     <p class="text-sm text-center">
                                         Forgot your password? Reset your password
-                                        <a href="{{ route('password.forgot') }}"
-                                            class="text-primary text-gradient font-weight-bold">here</a>
                                     </p>
                                 </form>
                             </div>
