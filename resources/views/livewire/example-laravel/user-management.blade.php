@@ -1,7 +1,57 @@
 
         <!-- Navbar -->
         <!-- End Navbar -->
-        <div class="container-fluid py-4">
+    <div class="container-fluid py-4">
+        <div wire:ignore.self id="modal-open-form-employee" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Crear Empleado</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form wire:submit.prevent="saveChanges" role="form text-left">
+                        <div class="modal-body">
+                            <div class="input-group input-group-static mb-4">
+                                <label>RFID</label>
+                                <input wire:model="rfid" type="text" class="form-control">
+                            </div>
+                            <div class="input-group input-group-static mb-4">
+                                <label>Nombre</label>
+                                <input wire:model="username" type="text" class="form-control">
+                            </div>
+                            <div class="input-group input-group-static mb-4">
+                                <label>Correo Electronico</label>
+                                <input  wire:model="email" type="text" class="form-control">
+                            </div>
+                            <div class="input-group input-group-dynamic mb-4">
+                                <label class="form-label" for="basic-url">Puerta de Acceso</label>
+                            </div>
+                            <br>
+                            @foreach ($doors as $door)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="{{ $door->_id }}" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    {{ $loop->index+1 }}
+                                </label>
+                            </div>
+                            @endforeach
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button wire:click="$toggle('showModal')" type="submit" class="btn bg-gradient-success">Guardar cambios</button>
+                            @if (session()->has('message'))
+                                <div>{{ session('message') }}</div>
+                            @endif
+                            @if (session()->has('error'))
+                                <div>{{ session('error') }}</div>
+                            @endif
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
             <div class="row">
                 <div class="col-12">
                     <div class="card my-4">
@@ -13,7 +63,7 @@
                             </div>
                         </div>
                         <div class=" me-3 my-3 text-end">
-                            <button class="btn bg-gradient-secondary mb-0" data-bs-toggle="modal" data-bs-target="#modal-open-form-employee">
+                            <button class="btn bg-gradient-secondary mb-0" data-bs-toggle="modal" wire:click="$toggle('showModal')" data-bs-target="#modal-open-form-employee">
                                 <i class="material-icons text-md">add</i>
                                 &nbsp;&nbsp;Agregar nuevo empleado
                             </button>
@@ -72,51 +122,5 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div id="modal-open-form-employee" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Crear Empleado</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form role="form text-left">
-                            <div class="input-group input-group-dynamic mb-4">
-                                <label class="form-label" for="basic-url">RFID</label>                                
-                                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" onfocus="focused(this)" onfocusout="defocused(this)">
-                            </div>
-                            <div class="input-group input-group-dynamic mb-4">
-                                <label class="form-label" for="basic-url">Nombre</label>
-                                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" onfocus="focused(this)" onfocusout="defocused(this)">
-                            </div>
-                            <div class="input-group input-group-dynamic mb-4">
-                                <label class="form-label" for="basic-url">Correo Electronico</label>
-                                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" onfocus="focused(this)" onfocusout="defocused(this)">
-                            </div>
-                            <div class="input-group input-group-dynamic mb-4">
-                                <label class="form-label" for="basic-url">Puerta de Acceso</label>
-                                
-                            </div>
-                            <br>
-                            @foreach ($doors as $door)
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="{{ $door->_id }}" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    {{ $loop->index+1 }}
-                                </label>
-                            </div>
-                            @endforeach
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn bg-gradient-success">Guardar cambios</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </div>   
 

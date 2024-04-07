@@ -3,78 +3,36 @@
       <!-- End Navbar -->
       <div class="container-fluid py-4">
           <div class="row pl-2">
-              <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                  <div class="card">
-                      <div class="card-header p-3 pt-2">
-                          <div
-                              class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                              <i class="fa fa-fw fa-door-open" aria-hidden="true"></i>
-                          </div>
-                          <div class="text-end pt-1">
-                              <h4 class="mb-0">Puerta 1</h4>
-                          </div>
-                      </div>
-                      <hr class="dark horizontal my-0">
-                      <div class="card-footer p-3">
-                            <div class="form-check form-switch float-end my-auto">
-                                <input 
-                                    id="navbarFixed"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    onclick=""
+             @foreach ($doors as $door)
+                @if(isset($door->status))
+                <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                    <div class="card">
+                        <div class="card-header p-3 pt-2">
+                            <div
+                                class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute"
                                 >
+                                <i class="fa fa-fw fa-door-open" aria-hidden="true"></i>
                             </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                  <div class="card">
-                      <div class="card-header p-3 pt-2">
-                          <div
-                              class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
-                              <i class="fa fa-fw fa-door-open" aria-hidden="true"></i>
-                          </div>
-                          <div class="text-end pt-1">                            
-                              <h4 class="mb-0">Puerta 2</h4>
-                          </div>
-                      </div>
-                      <hr class="dark horizontal my-0">
-                      <div class="card-footer p-3">
-                            <div class="form-check form-switch float-end my-auto">
-                                <input 
-                                    id="navbarFixed"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    onclick=""
-                                >
+                            <div class="text-end pt-1">
+                                <h4 class="mb-0">Puerta {{ $loop->index + 1 }}</h4>
                             </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                  <div class="card">
-                      <div class="card-header p-3 pt-2">
-                          <div
-                              class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-                              <i class="fa fa-fw fa-door-open" aria-hidden="true"></i>
-                          </div>
-                          <div class="text-end pt-1">
-                                <h4 class="mb-0">Puerta 3</h4>
-                          </div>
-                      </div>
-                      <hr class="dark horizontal my-0">
-                      <div class="card-footer p-3">
-                            <div class="form-check form-switch float-end my-auto">
-                                <input 
-                                    id="navbarFixed"
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    onclick=""
-                                >
-                            </div>
-                      </div>
-                  </div>
-              </div>
+                        </div>
+                        <hr class="dark horizontal my-0">
+                        <div class="card-footer p-3">
+                                <div class="form-check form-switch float-end my-auto">
+                                    <input 
+                                        id="door-{{ $door->_id }}"
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        wire:click="toggleDoorStatus('{{ $door->_id }}')"
+                                        @if($door->status) checked @endif
+                                    >
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
+            @endforeach
           </div>
           <div class="row mt-4">
               <div class="col-lg-4 col-md-6 mt-4 mb-4">
@@ -84,7 +42,7 @@
                       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
                           <div class="bg-gradient-success shadow-success border-radius-lg py-3 pe-1">
                               <div class="chart">
-                                  <canvas id="chart-line" class="chart-canvas" height="170"></canvas>
+                                  <canvas id="chart-line" class="chart-canvas" height="170"  wire:ignore></canvas>
                               </div>
                           </div>
                       </div>
@@ -92,9 +50,9 @@
                             <h6 class="mb-0 "> Selecciona una puerta </h6>
                             <select class="form-select">
                                 <option selected value=""></option>
-                                <option value="1">Puerta 1</option>
-                                <option value="2">Puerta 2</option>
-                                <option value="3">Puerta 3</option>
+                                @foreach ($doors as $door)
+                                <option value="{{ $door->_id }}">Puerta {{ $loop->index + 1 }}</option>
+                                @endforeach
                             </select>
                       </div>
                   </div>
