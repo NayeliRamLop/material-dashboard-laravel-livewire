@@ -51,7 +51,9 @@
                             <select class="form-select">
                                 <option selected value=""></option>
                                 @foreach ($doors as $door)
+                                @if(isset($door->status))
                                 <option value="{{ $door->_id }}">Puerta {{ $loop->index + 1 }}</option>
+                                @endif
                                 @endforeach
                             </select>
                       </div>
@@ -69,6 +71,8 @@
 
 
       var ctx2 = document.getElementById("chart-line").getContext("2d");
+
+    
 
       new Chart(ctx2, {
           type: "line",

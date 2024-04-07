@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Auth;
 
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
+//login js
 
 class Login extends Component
 {
