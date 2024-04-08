@@ -3,7 +3,7 @@
       <!-- End Navbar -->
       <div class="container-fluid py-4">
           <div class="row pl-2">
-             @foreach ($doors as $door)
+            @foreach ($doors as $door)
                 @if(isset($door->status))
                 <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                     <div class="card">
@@ -42,13 +42,13 @@
                       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
                           <div class="bg-gradient-success shadow-success border-radius-lg py-3 pe-1">
                               <div class="chart">
-                                  <canvas id="chart-line" class="chart-canvas" height="170"  wire:ignore></canvas>
+                                  <canvas id="chart-line" class="chart-canvas" height="350"  wire:ignore></canvas>
                               </div>
                           </div>
                       </div>
                       <div class="card-body">
                             <h6 class="mb-0 "> Selecciona una puerta </h6>
-                            <select class="form-select">
+                            <select class="form-select" wire:model="selectedDoor">
                                 <option selected value=""></option>
                                 @foreach ($doors as $door)
                                 @if(isset($door->status))
@@ -69,91 +69,205 @@
   <script src="{{ asset('assets') }}/js/plugins/chartjs.min.js"></script>
   <script>
 
+        document.addEventListener('livewire:load', function () {
+            var ctx = document.getElementById('chart-line').getContext('2d');
+            var chart;
 
-      var ctx2 = document.getElementById("chart-line").getContext("2d");
+            Livewire.on('chartDataUpdated', data => {
+                if (chart) {
+                    chart.destroy();
+                }
 
-    
+                chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                            labels: data.labels,
+                            datasets: [{
+                                label: "doors data",
+                                data: data.data,
+                                tension: 0,
+                                borderWidth: 0,
+                                pointRadius: 5,
+                                pointBackgroundColor: "rgba(255, 255, 255, .8)",
+                                pointBorderColor: "transparent",
+                                borderColor: "rgba(255, 255, 255, .8)",
+                                borderColor: "rgba(255, 255, 255, .8)",
+                                borderWidth: 4,
+                                backgroundColor: "transparent",
+                                fill: true,
+                                maxBarThickness: 6,
+                            }],
+                        },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            }
+                        },
+                        interaction: {
+                            intersect: false,
+                            mode: 'index',
+                        },
+                        scales: {
+                            y: {
+                                grid: {
+                                    drawBorder: false,
+                                    display: true,
+                                    drawOnChartArea: true,
+                                    drawTicks: false,
+                                    borderDash: [5, 5],
+                                    color: 'rgba(255, 255, 255, .2)'
+                                },
+                                ticks: {
+                                    display: true,
+                                    color: '#f8f9fa',
+                                    padding: 10,
+                                    font: {
+                                        size: 14,
+                                        weight: 300,
+                                        family: "Roboto",
+                                        style: 'normal',
+                                        lineHeight: 2
+                                    },
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Cantidad Personal',
+                                    color: '#f8f9fa',
+                                    font: {
+                                        size: 16,
+                                        weight: 'bold',
+                                        family: "Roboto",
+                                        style: 'normal',
+                                    },
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    drawBorder: false,
+                                    display: false,
+                                    drawOnChartArea: false,
+                                    drawTicks: false,
+                                    borderDash: [5, 5]
+                                },
+                                ticks: {
+                                    display: true,
+                                    color: '#f8f9fa',
+                                    padding: 10,
+                                    font: {
+                                        size: 14,
+                                        weight: 300,
+                                        family: "Roboto",
+                                        style: 'normal',
+                                        lineHeight: 2
+                                    },
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Hora',
+                                    color: '#f8f9fa',
+                                    font: {
+                                        size: 16,
+                                        weight: 'bold',
+                                        family: "Roboto",
+                                        style: 'normal',
+                                    },
+                                }
+                            },
+                        },
+                    },
+                });
+            });
 
-      new Chart(ctx2, {
-          type: "line",
-          data: {
-              labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-              datasets: [{
-                  label: "Mobile apps",
-                  tension: 0,
-                  borderWidth: 0,
-                  pointRadius: 5,
-                  pointBackgroundColor: "rgba(255, 255, 255, .8)",
-                  pointBorderColor: "transparent",
-                  borderColor: "rgba(255, 255, 255, .8)",
-                  borderColor: "rgba(255, 255, 255, .8)",
-                  borderWidth: 4,
-                  backgroundColor: "transparent",
-                  fill: true,
-                  data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
-                  maxBarThickness: 6
+            @this.on('updatedSelectedDoor', () => {
+                @this.call('updatedSelectedDoor', @this.selectedDoor);
+            });
+        });
 
-              }],
-          },
-          options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                  legend: {
-                      display: false,
-                  }
-              },
-              interaction: {
-                  intersect: false,
-                  mode: 'index',
-              },
-              scales: {
-                  y: {
-                      grid: {
-                          drawBorder: false,
-                          display: true,
-                          drawOnChartArea: true,
-                          drawTicks: false,
-                          borderDash: [5, 5],
-                          color: 'rgba(255, 255, 255, .2)'
-                      },
-                      ticks: {
-                          display: true,
-                          color: '#f8f9fa',
-                          padding: 10,
-                          font: {
-                              size: 14,
-                              weight: 300,
-                              family: "Roboto",
-                              style: 'normal',
-                              lineHeight: 2
-                          },
-                      }
-                  },
-                  x: {
-                      grid: {
-                          drawBorder: false,
-                          display: false,
-                          drawOnChartArea: false,
-                          drawTicks: false,
-                          borderDash: [5, 5]
-                      },
-                      ticks: {
-                          display: true,
-                          color: '#f8f9fa',
-                          padding: 10,
-                          font: {
-                              size: 14,
-                              weight: 300,
-                              family: "Roboto",
-                              style: 'normal',
-                              lineHeight: 2
-                          },
-                      }
-                  },
-              },
-          },
-      });
+        // var ctx2 = document.getElementById("chart-line").getContext("2d");
+
+        // new Chart(ctx2, {
+        //     type: "line",
+        //     data: {
+        //         labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        //         datasets: [{
+        //             label: "Mobile apps",
+        //             tension: 0,
+        //             borderWidth: 0,
+        //             pointRadius: 5,
+        //             pointBackgroundColor: "rgba(255, 255, 255, .8)",
+        //             pointBorderColor: "transparent",
+        //             borderColor: "rgba(255, 255, 255, .8)",
+        //             borderColor: "rgba(255, 255, 255, .8)",
+        //             borderWidth: 4,
+        //             backgroundColor: "transparent",
+        //             fill: true,
+        //             data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
+        //             maxBarThickness: 6
+
+        //         }],
+        //     },
+        //     options: {
+        //         responsive: true,
+        //         maintainAspectRatio: false,
+        //         plugins: {
+        //             legend: {
+        //                 display: false,
+        //             }
+        //         },
+        //         interaction: {
+        //             intersect: false,
+        //             mode: 'index',
+        //         },
+        //         scales: {
+        //             y: {
+        //                 grid: {
+        //                     drawBorder: false,
+        //                     display: true,
+        //                     drawOnChartArea: true,
+        //                     drawTicks: false,
+        //                     borderDash: [5, 5],
+        //                     color: 'rgba(255, 255, 255, .2)'
+        //                 },
+        //                 ticks: {
+        //                     display: true,
+        //                     color: '#f8f9fa',
+        //                     padding: 10,
+        //                     font: {
+        //                         size: 14,
+        //                         weight: 300,
+        //                         family: "Roboto",
+        //                         style: 'normal',
+        //                         lineHeight: 2
+        //                     },
+        //                 }
+        //             },
+        //             x: {
+        //                 grid: {
+        //                     drawBorder: false,
+        //                     display: false,
+        //                     drawOnChartArea: false,
+        //                     drawTicks: false,
+        //                     borderDash: [5, 5]
+        //                 },
+        //                 ticks: {
+        //                     display: true,
+        //                     color: '#f8f9fa',
+        //                     padding: 10,
+        //                     font: {
+        //                         size: 14,
+        //                         weight: 300,
+        //                         family: "Roboto",
+        //                         style: 'normal',
+        //                         lineHeight: 2
+        //                     },
+        //                 }
+        //             },
+        //         },
+        //     },
+        // });
 
 
   </script>

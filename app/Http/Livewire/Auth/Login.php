@@ -3,8 +3,8 @@
 namespace App\Http\Livewire\Auth;
 
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Http;
 use Livewire\Component;
-//login js
 
 class Login extends Component
 {
@@ -25,22 +25,36 @@ class Login extends Component
 
     public function mount() {
       
-        $this->fill(['email' => 'admin@material.com', 'password' => 'secret']);    
+        $this->fill(['email' => 'ejemplo@email.com', 'password' => 'secret']);    
     }
     
     public function store()
     {
-        // $attributes = $this->validate();
+        $host = env("MOBILE_API_HOST", "http://localhost:3000");
 
-        // if (! auth()->attempt($attributes)) {
-        //     throw ValidationException::withMessages([
-        //         'email' => 'Your provided credentials could not be verified.'
-        //     ]);
-        // }
+        $responseUsersAdmin = Http::get($host . "/api/getUsuaioAdmin");
+        // Probar con esta api en lugar de la anterior:
+        // $responseUsersAdmin = Http::get("http://localhost:3000/api/login");
 
-        session()->regenerate();
+        $usersAdmin = collect(
+            json_decode($responseUsersAdmin->body())
+        );
+        
+        $userFound = $usersAdmin->first(function ($user) {
+            return $user->email == $this->email;
+        });
 
-        return redirect('/dashboard');
+        if ($responseUsersAdmin->successful() && $userFound) {
+            session()->regenerate();
+            session(['userAdmin' => $userFound]);
+
+            return redirect('/dashboard');
+        } else {
+            throw ValidationException::withMessages([
+                'email' => 'No se encontro un usuario con las credenciales ingresadas.',
+            ]);
+        }
 
     }
+    
 }

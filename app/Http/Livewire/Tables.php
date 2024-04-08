@@ -7,14 +7,18 @@ use Illuminate\Support\Facades\Http;
 
 class Tables extends Component
 {
+    public $movimientos;
+
     public function render()
     {
-        $response = Http::get('http://localhost:3000/api/getMovimientos', [
-            'emailAdmin' => 'Admin2@gmail.com',
+        $host = env("MOBILE_API_HOST", "http://localhost:3000");
+        
+        $response = Http::get($host . '/api/getMovimientos', [
+            "emailAdmin" => session('userAdmin')->email
         ]);
 
-        $movimientos = json_decode($response->body());
+        $this->movimientos = json_decode($response->body());
 
-        return view('livewire.tables', compact('movimientos'));
+        return view('livewire.tables');
     }
 }

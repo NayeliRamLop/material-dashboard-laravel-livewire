@@ -10,7 +10,6 @@ class UserManagement extends Component
 {
     public $username;
     public $email;
-    public $emailAdmin;
     public $rfid;
     public $showModal = false;
     public $users;
@@ -18,10 +17,12 @@ class UserManagement extends Component
 
     public function saveChanges()
     {
-        $response = Http::post('http://localhost:3000/api/register', [
+        $host = env("MOBILE_API_HOST", "http://localhost:3000");
+        
+        $response = Http::post($host . '/api/register', [
             'username' => $this->username,
             'email' => $this->email,
-            'emailAdmin' => 'Admin2@gmail.com',
+            "emailAdmin" => session('userAdmin')->email,
             'rfid' => $this->rfid,
         ]);
 
@@ -35,14 +36,16 @@ class UserManagement extends Component
     }
 
     public function hydrate()
-    {
-        $responseUsers = Http::get('http://localhost:3000/api/getUsuarios', [
-            'emailAdmin' => 'Admin2@gmail.com',
+    {   
+        $host = env("MOBILE_API_HOST", "http://localhost:3000");
+
+        $responseUsers = Http::get($host . '/api/getUsuarios', [
+            "emailAdmin" => session('userAdmin')->email
         ]);
         $this->users = json_decode($responseUsers->body());
 
-        $responseDoors = Http::get('http://localhost:3000/api/puertas', [
-            'emailAdmin' => 'Admin2@gmail.com',
+        $responseDoors = Http::get($host . '/api/puertas', [
+            "emailAdmin" => session('userAdmin')->email
         ]);
         $this->doors = json_decode($responseDoors->body());
     }
@@ -50,13 +53,15 @@ class UserManagement extends Component
 
     public function render()
     {
-        $responseUsers = Http::get('http://localhost:3000/api/getUsuarios', [
-            'emailAdmin' => 'Admin3@gmail.com',
+        $host = env("MOBILE_API_HOST", "http://localhost:3000");
+        
+        $responseUsers = Http::get($host . '/api/getUsuarios', [
+            "emailAdmin" => session('userAdmin')->email
         ]);
         $this->users = json_decode($responseUsers->body());
 
-        $responseDoors = Http::get('http://localhost:3000/api/puertas', [
-            'emailAdmin' => 'Admin3@gmail.com',
+        $responseDoors = Http::get($host . '/api/puertas', [
+            "emailAdmin" => session('userAdmin')->email
         ]);
         $this->doors = json_decode($responseDoors->body());
 
