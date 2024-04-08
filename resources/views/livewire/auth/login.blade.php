@@ -22,7 +22,7 @@
                                     @endif
                                     <div class="input-group input-group-outline mt-3 @if(strlen($email ?? '') > 0) is-filled @endif">
                                         <label class="form-label">Correo electrónico</label>
-                                        <input wire:model='email' type="email" class="form-control">
+                                        <input wire:model='email' type="email" class="form-control" >
                                     </div>
                                     @error('email')
                                     <p class='text-danger inputerror'>{{ $message }} </p>
@@ -40,7 +40,7 @@
                                     <p class="mt-4 text-sm text-center">
                                         ¿No tienes una cuenta? ¡Regístrate!
                                         <a href="{{ route('register') }}"
-                                            class="text-success text-gradient font-weight-bold">Crear</a>
+                                            class="text-success text-gradient font-weight-bold"style="background-image: linear-gradient(195deg, #000 0%, #43A047 100%);">Crear</a>
                                     </p>
                                 </form>
                             </div>
